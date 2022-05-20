@@ -41,3 +41,8 @@ def test_city_factory():
     assert los_altos.cost_relative_to_country() > 9
     assert los_altos.min_wage_jobs() > 15
     assert los_altos.how_much_whiter() * 100 > 5
+    assert 1000 < los_altos.affh_needed_li_homes() < 10000
+
+
+def test_li_pct():
+    assert 1 < utils.get_pct_li('Los Altos') * 100 < 20

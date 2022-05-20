@@ -52,3 +52,12 @@ def get_abag_data(city):
     subdir = f'./data/ABAG-MTC Housing Needs Data Packets/{city}'
     return pd.read_excel(f'{subdir}/ABAG_MTC_Housing_Needs_Data_Workbook_{city}.xlsx',
                          sheet_name='POPEMP-21', skiprows=3)
+
+
+def get_pct_li(city):
+    """Return percent of the city that's low income (encompassing ELI, VLI, & LI)."""
+    df = get_abag_data(city)
+    df.set_index('Group', inplace=True)
+    total_pop = df.sum().sum().item()
+    li_pop = df.sum(axis=1)[:3].sum().item()
+    return round(li_pop / total_pop, 3)

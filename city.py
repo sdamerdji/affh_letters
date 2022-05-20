@@ -1,4 +1,5 @@
 import math
+import utils
 
 
 class CityFactory:
@@ -14,12 +15,13 @@ class CityFactory:
         pct_black = round(city_obi_data['Black'].item(), 3)
         pct_latino = round(city_obi_data['Latino'].item(), 3)
         pct_asian = round(city_obi_data['Asian'].item(), 3)
+        pct_li = utils.get_pct_li(city)
         return City(home_price=home_price, pct_white=pct_white, pct_black=pct_black,
-                    pct_latino=pct_latino, pct_asian=pct_asian, name=city)
+                    pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li)
 
 
 class City:
-    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name):
+    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name, pct_li):
         self._home_price = home_price
         self._median_salary = 0
         self.pct_white = pct_white
@@ -27,6 +29,7 @@ class City:
         self.pct_latino = pct_latino
         self.pct_asian = pct_asian
         self.name = name
+        self.pct_li = pct_li
 
     def __repr__(self):
         return self.name
@@ -138,3 +141,7 @@ class City:
         m_maintenance = maintenance_costs / 12
         m_mortgage = mortgage_interest * principal / 30 / 12
         return m_property_tax + m_insurance + m_maintenance + m_mortgage
+
+    def affh_needed_li_homes(self):
+        """How many LI homes would this city need to add to achieve parity with the region?"""
+        return 0
