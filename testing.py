@@ -19,6 +19,16 @@ def test_get_zillow_data():
         assert city in zillow.City.values
         
 
+def test_get_abag_data():
+    la = utils.get_abag_data('Los Altos')
+    lah = utils.get_abag_data('Los Altos Hills')
+    exclusionary_cities = utils.get_exclusionary_cities()
+    for city in exclusionary_cities:
+        df = utils.get_abag_data(city)
+        assert df.size
+        assert 'Group' in df.columns
+
+
 def test_city_factory():
     cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     los_altos = cf.build('Los Altos')
@@ -30,3 +40,4 @@ def test_city_factory():
     assert los_altos.exceeds_private_island()
     assert los_altos.cost_relative_to_country() > 9
     assert los_altos.min_wage_jobs() > 15
+    assert los_altos.how_much_whiter() * 100 > 5

@@ -4,6 +4,7 @@ import pandas as pd
 OBI_DATA = None
 ZILLOW_DATA = None
 
+
 def get_obi_data():
     """Load OBI data only once."""
     global OBI_DATA
@@ -46,3 +47,8 @@ def get_exclusionary_cities():
     return cities
 
 
+def get_abag_data(city):
+    city = '_'.join(city.split(' '))
+    subdir = f'./data/ABAG-MTC Housing Needs Data Packets/{city}'
+    return pd.read_excel(f'{subdir}/ABAG_MTC_Housing_Needs_Data_Workbook_{city}.xlsx',
+                         sheet_name='POPEMP-21', skiprows=3)

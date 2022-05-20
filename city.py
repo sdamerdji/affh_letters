@@ -49,8 +49,14 @@ class City:
         return self.pct_white > .85
 
     def how_much_whiter(self):
-        """By what percent is this city whiter than the rest of the Bay Area?"""
-        bay_area_white_pct = .42  # FIXME
+        """By what percent is this city whiter than the rest of the Bay Area?
+
+        Notes
+        -----
+        Bay Area is 39% white as of 2019. That's the baseline to compare a city to.
+        https://bayareaequityatlas.org/indicators/race-ethnicity#/
+        """
+        bay_area_white_pct = .39
         return round(self.pct_white - bay_area_white_pct, 1)
 
     def salary_to_buy(self):
