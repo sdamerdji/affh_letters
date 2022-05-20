@@ -9,23 +9,27 @@ class CityFactory:
     def build(self, city):
         assert city in self._obi_data['Cities/Towns'].values
         city_obi_data = self._obi_data.query('`Cities/Towns` == @city')
-        home_price = 0
+        home_price = self._price_df.query('`City` == @city')['2022-04-30'].item()
         pct_white = round(city_obi_data['White'].item(), 3)
         pct_black = round(city_obi_data['Black'].item(), 3)
         pct_latino = round(city_obi_data['Latino'].item(), 3)
         pct_asian = round(city_obi_data['Asian'].item(), 3)
         return City(home_price=home_price, pct_white=pct_white, pct_black=pct_black,
-                    pct_latino=pct_latino, pct_asian=pct_asian)
+                    pct_latino=pct_latino, pct_asian=pct_asian, name=city)
 
 
 class City:
-    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian):
+    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name):
         self._home_price = home_price
         self._median_salary = 0
         self.pct_white = pct_white
         self.pct_black = pct_black
         self.pct_latino = pct_latino
         self.pct_asian = pct_asian
+        self.name = name
+
+    def __repr__(self):
+        return self.name
 
     def min_wage_jobs(self):
         """How many minimum wage jobs does it take to afford an average home in this city?"""
@@ -92,7 +96,7 @@ class City:
         -----
         Data source: Q1 2022 https://fred.stlouisfed.org/series/MSPUS"""
         country_avg = 428700
-        return round(self.home_price / country_avg, 1)
+        return round(self.home_price / country_avg)
 
     def monthly_cost_to_own(self):
         """How much per month does it cost to buy an average home here?

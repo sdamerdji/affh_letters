@@ -2,7 +2,7 @@ import pandas as pd
 
 """Dataframe with Bay Area segregation statistics. Courtesy of Othering and Belonging Institute (hence OBI)"""
 OBI_DATA = None
-
+ZILLOW_DATA = None
 
 def get_obi_data():
     """Load OBI data only once."""
@@ -12,6 +12,24 @@ def get_obi_data():
     OBI_DATA = pd.read_excel('./data/bay.area_divergence.download.xlsx',
                              sheet_name='Inter-Municipal Divergence')
     return OBI_DATA
+
+
+def get_zillow_data():
+    """Load Zillow data only once."""
+    global ZILLOW_DATA
+    if ZILLOW_DATA is not None:
+        return ZILLOW_DATA
+    df = pd.read_csv('./data/zillow.csv')
+    df = simplify_zillow_data(df)
+    ZILLOW_DATA = df
+    return ZILLOW_DATA
+
+
+def simplify_zillow_data(df):
+    """Only return Californian cities with their latest home prices & prices from the start of RHNA5."""
+    df = df[df.State == 'CA'][['RegionName', '2014-01-31', '2022-04-30']].copy()
+    df.rename(columns={'RegionName': 'City'}, inplace=True)
+    return df
 
 
 def get_exclusionary_cities():
