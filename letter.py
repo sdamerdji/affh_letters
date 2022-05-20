@@ -85,10 +85,11 @@ font_config = FontConfiguration()
 
 tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
-cities = utils.get_exclusionary_cities()
+cities = utils.get_exclusionary_cities()[:3]
+factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
 
 for city_name in cities:
-    city = CityFactory(city_name)
+    city = factory.build(city_name)
     body = make_body(city)
     cell_classes = 'class="border p-1"'
     body_html = ''.join(
