@@ -41,7 +41,8 @@ class City:
         n_weeks = 52
         yearly_pay = hourly_wage * n_hours * n_weeks
         monthly_pay = yearly_pay / 12
-        return math.ceil(self.monthly_cost_to_own() / monthly_pay)
+        affordable_rent = 3 / 10 * monthly_pay
+        return math.ceil(self.monthly_cost_to_own() / affordable_rent)
 
     @property
     def home_price(self):
@@ -136,9 +137,9 @@ class City:
         principal = self.home_price * .80
 
         # Monthly cost
-        m_property_tax = self.home_price * property_tax
+        m_property_tax = self.home_price * property_tax / 12
         m_insurance = homeowners_insurance / 12
-        m_maintenance = maintenance_costs / 12
+        m_maintenance = self.home_price * maintenance_costs / 12
         m_mortgage = mortgage_interest * principal / 30 / 12
         return m_property_tax + m_insurance + m_maintenance + m_mortgage
 
