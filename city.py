@@ -122,8 +122,7 @@ class City:
         Mortgage interest rate: average rate today for a 30-year fixed rate mortgage is 4.96% per Business Insider as
         of May 2, 2022.
 
-        Maintenance costs: average yearly maintenance cost is 16,957. average home price is 600k in California as of
-        2020, so the maintenance cost is around 2.8% of the home price.
+        Maintenance costs: average yearly maintenance cost is 16,957.
 
         This method is only a conservative approximation of monthly costs. It does not account for HOA fees
         or mortgage insurance. It also only returns the cost for the first month of ownership, so the
@@ -133,14 +132,14 @@ class City:
         property_tax = 0.012
         homeowners_insurance = 1565
         mortgage_interest = 0.0496
-        maintenance_costs = 0.028
+        maintenance_cost = 16957
         principal = self.home_price * .80
 
         # Monthly cost
         m_property_tax = self.home_price * property_tax / 12
         m_insurance = homeowners_insurance / 12
-        m_maintenance = self.home_price * maintenance_costs / 12
-        m_mortgage = mortgage_interest * principal / 30 / 12
+        m_maintenance = maintenance_cost / 12
+        m_mortgage = (1 + mortgage_interest) * principal / 30 / 12
         return m_property_tax + m_insurance + m_maintenance + m_mortgage
 
     def affh_needed_li_homes(self):
