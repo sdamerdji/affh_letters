@@ -16,12 +16,13 @@ class CityFactory:
         pct_latino = round(city_obi_data['Latino'].item(), 3)
         pct_asian = round(city_obi_data['Asian'].item(), 3)
         pct_li = utils.get_pct_li(city)
+        pop = city_obi_data['Population'].item()
         return City(home_price=home_price, pct_white=pct_white, pct_black=pct_black,
-                    pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li)
+                    pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li, pop=pop)
 
 
 class City:
-    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name, pct_li):
+    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name, pct_li, pop):
         self._home_price = home_price
         self._median_salary = 0
         self.pct_white = pct_white
@@ -30,6 +31,7 @@ class City:
         self.pct_asian = pct_asian
         self.name = name
         self.pct_li = pct_li
+        self.pop = pop
 
     def __repr__(self):
         return self.name
@@ -61,7 +63,32 @@ class City:
         https://bayareaequityatlas.org/indicators/race-ethnicity#/
         """
         bay_area_white_pct = .39
-        return round(self.pct_white - bay_area_white_pct, 1)
+        delta = round(self.pct_white - bay_area_white_pct, 3)
+        return max(delta, 0)
+
+    def how_much_less_black(self):
+        """By what percent is this city less Black than the rest of the Bay Area?
+
+        Notes
+        -----
+        Bay Area is 6% black as of 2019. That's the baseline to compare a city to.
+        https://bayareaequityatlas.org/indicators/race-ethnicity#/
+        """
+        bay_area_black_pct = .06
+        delta = round(bay_area_black_pct - self.pct_black, 3)
+        return max(delta, 0)
+
+    def how_much_less_brown(self):
+        """By what percent is this city less brown than the rest of the Bay Area?
+
+        Notes
+        -----
+        Bay Area is 24% black as of 2019. That's the baseline to compare a city to.
+        https://bayareaequityatlas.org/indicators/race-ethnicity#/
+        """
+        bay_area_latino_pct = .06
+        delta = round(bay_area_latino_pct - self.pct_latino, 3)
+        return max(delta, 0)
 
     def salary_to_buy(self):
         return self.monthly_cost_to_own() * 10 / 3 * 12
@@ -143,5 +170,13 @@ class City:
         return m_property_tax + m_insurance + m_maintenance + m_mortgage
 
     def affh_needed_li_homes(self):
-        """How many LI homes would this city need to add to achieve parity with the region?"""
-        return 0
+        """How many LI homes would this city need to add to achieve parity with the region?
+        
+        Notes
+        -----
+        http://www.bayareacensus.ca.gov/california.htm
+        https://bayareaequityatlas.org/node/60841#:~:text=About%2016%20percent%20of%20Bay,in%20this%20low%2Dincome%20category.
+        """
+        li_pct_bay_area = .488
+        n_ppl_per_home = 2.9
+        return math.ceil(self.pop * (li_pct_bay_area - self.pct_li) / n_ppl_per_home)

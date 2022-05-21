@@ -41,6 +41,8 @@ def test_city_factory():
     assert los_altos.cost_relative_to_country() > 9
     assert los_altos.min_wage_jobs() > 10
     assert los_altos.how_much_whiter() * 100 > 5
+    assert los_altos.how_much_less_black() * 100 > 5
+    assert los_altos.how_much_less_brown() * 100 > 5
     # assert 1000 < los_altos.affh_needed_li_homes() < 10000
 
     cupertino = cf.build('Cupertino')
