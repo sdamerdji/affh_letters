@@ -63,6 +63,14 @@ def get_pct_li(city):
     return round(li_pop / total_pop, 3)
 
 
+def get_racial_change(city):
+    df = get_abag_data(city, 'POPEMP-02')
+    df.set_index('Year', inplace=True)
+    deltas = df.loc[2019] - df.loc[2010]
+    black, white, brown = deltas[2], deltas[3], deltas[5]
+    return black, white, brown
+
+
 def get_city_rhna_targets(city):
     df = pd.read_excel('./data/rhna.xlsx', skiprows=3)
     df.set_index('Jurisdiction', inplace=True)

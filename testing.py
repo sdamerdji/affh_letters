@@ -74,3 +74,5 @@ def test_rhna_targets():
 def test_li_pct():
     assert 1 < utils.get_pct_li('Los Altos') * 100 < 20
 
+def test_racial_change():
+    df = utils.get_racial_change('Cupertino')
