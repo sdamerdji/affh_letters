@@ -19,12 +19,15 @@ class CityFactory:
         pct_asian = round(city_obi_data['Asian'].item(), 3)
         pct_li = utils.get_pct_li(city)
         pop = city_obi_data['Population'].item()
+        vli_rhna, li_rhna, m_rhna, am_rhna, tot_rhna = utils.get_city_rhna_targets(city)
         return City(home_price=home_price, pct_white=pct_white, pct_black=pct_black,
-                    pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li, pop=pop)
+                    pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li, pop=pop,
+                    vli_rhna=vli_rhna, li_rhna=li_rhna, m_rhna=m_rhna, am_rhna=am_rhna, tot_rhna=tot_rhna)
 
 
 class City:
-    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name, pct_li, pop):
+    def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name, pct_li, pop,
+                 vli_rhna, li_rhna, m_rhna, am_rhna, tot_rhna):
         self._home_price = home_price
         self._median_salary = 0
         self.pct_white = pct_white
@@ -35,6 +38,11 @@ class City:
         self.pct_li = pct_li
         self.pop = pop
         self.custom_text = custom_analysis.get_city_custom_analysis(name)
+        self.vli_rhna = vli_rhna
+        self.li_rhna = li_rhna
+        self.m_rhna = m_rhna
+        self.am_rhna = am_rhna
+        self.tot_rhna = tot_rhna
 
     def __repr__(self):
         return self.name

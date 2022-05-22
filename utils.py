@@ -47,17 +47,24 @@ def get_exclusionary_cities():
     return cities
 
 
-def get_abag_data(city):
+def get_abag_data(city, sheet='POPEMP-21'):
     city = '_'.join(city.split(' '))
     subdir = f'./data/ABAG-MTC Housing Needs Data Packets/{city}'
     return pd.read_excel(f'{subdir}/ABAG_MTC_Housing_Needs_Data_Workbook_{city}.xlsx',
-                         sheet_name='POPEMP-21', skiprows=3)
+                         sheet_name=sheet, skiprows=3)
 
 
 def get_pct_li(city):
     """Return percent of the city that's low income (encompassing ELI, VLI, & LI)."""
-    df = get_abag_data(city)
+    df = get_abag_data(city, 'POPEMP-21')
     df.set_index('Group', inplace=True)
     total_pop = df.sum().sum().item()
     li_pop = df.sum(axis=1)[:3].sum().item()
     return round(li_pop / total_pop, 3)
+
+
+def get_city_rhna_targets(city):
+    df = pd.read_excel('./data/rhna.xlsx', skiprows=3)
+    df.set_index('Jurisdiction', inplace=True)
+    vli, li, m, am, total = df.loc[city]
+    return vli, li, m, am, total

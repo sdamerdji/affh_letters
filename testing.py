@@ -35,6 +35,7 @@ def test_city_factory():
     assert los_altos.pct_white > 0.50
     assert los_altos.home_price > 4000000
 
+
 def test_city_cost_methods():
     cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     los_altos = cf.build('Los Altos')
@@ -47,6 +48,7 @@ def test_city_cost_methods():
     assert los_altos.income_percent() == '1%'
     assert 1000 < los_altos.affh_needed_li_homes() < 10000
 
+
 def test_city_race_disparity_methods():
     cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     los_altos_hills = cf.build('Los Altos Hills')
@@ -55,11 +57,18 @@ def test_city_race_disparity_methods():
     assert los_altos_hills.how_much_less_brown() * 100 > 5
 
 
-def test_city_methods():
+def test_city_methods2():
     cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     cupertino = cf.build('Cupertino')
     assert 200000 < cupertino.salary_to_buy() < 500000
     assert cupertino.income_percent() == '2%'
+
+
+def test_rhna_targets():
+    vli, li, m, am, tot = utils.get_city_rhna_targets('Los Altos')
+    assert (vli + li + m + am) == tot
+    vli, li, m, am, tot = utils.get_city_rhna_targets('Mountain View')
+    assert (vli + li + m + am) == tot
 
 
 def test_li_pct():
