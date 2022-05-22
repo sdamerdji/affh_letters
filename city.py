@@ -66,7 +66,7 @@ class City:
         https://bayareaequityatlas.org/indicators/race-ethnicity#/
         """
         bay_area_white_pct = .39
-        delta = 1 - round(self.pct_white / bay_area_white_pct, 3)
+        delta = round(self.pct_white / bay_area_white_pct, 3) - 1
         return max(delta, 0)
 
     def how_much_less_black(self):
