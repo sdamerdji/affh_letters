@@ -1,6 +1,8 @@
 import math
-import utils
+
 import custom_analysis
+import utils
+
 
 class CityFactory:
     def __init__(self, obi_df, price_df):
@@ -104,6 +106,27 @@ class City:
         """
         one_percent = 597815
         return self.salary_to_buy() > one_percent
+
+    def income_percent(self):
+        """
+        Income data is 2019 data from here https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-tax-rate-and-income-percentile#earlyRelease
+        See excel sheet under "Number of Returns, Shares of AGI and Total Income Tax, AGI Floor on
+        Percentiles in Current and Constant Dollars, and Average Tax Rates"
+        :return:
+        """
+        income_data = {'0.001%': 60658598,
+                       '0.01%': 12623539,
+                       '0.1%': 2458432,
+                       '1%': 546434,
+                       '2%': 364693,
+                       '3%': 291384,
+                       '4%': 249320,
+                       '5%': 221572,
+                       '10%': 154589,
+                       '20%': 103012}
+        for pct, income in income_data.items():
+            if income <= self.salary_to_buy():
+                return pct
 
     def exceeds_private_island(self):
         """Does buying a home in the city cost more than buy a private island?

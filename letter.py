@@ -34,8 +34,9 @@ def make_body(city):
               f'<a href="https://www.zillow.com/research/data/">${int(round(city.home_price, -3)):,}</a>'
               f', which is only affordable to someone earning a salary '
               f'of ${int(round(city.salary_to_buy(), -3)):,}')
-    if city.one_percenter_city():
-        backgr += ', meaning <b class="text-bold">only the top 1% can afford to settle down in your community</b>'
+    if city.income_percent():
+        backgr += (f', meaning <b class="text-bold">only the richest {city.income_percent()} of households can afford '
+                   f'to settle down in your community</b>')
     if city.exceeds_castle():
         backgr += (". To put a finer point on the level of affluence in your community, the average home in your " 
                    'city costs more than <a href="www.forbes.com/sites/forbes-global-properties/2021/10/28/buying-a-french-chateau-can-cost-less-than-a-los-angeles-teardown/">French castles</a>')
