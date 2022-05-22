@@ -1,6 +1,6 @@
 from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
-
+from datetime import date
 import utils
 from city import CityFactory
 
@@ -18,15 +18,14 @@ header = """
 
 
 def make_body(city):
-    intro = (f'May 21, 2022\n'
+    today = date.today().strftime("%B %d, %Y")
+    intro = (f'{today}\n'
              f'Dear {city} City Council:\n'
              f'We are writing on behalf of <b class="text-bold">YIMBY Law</b> regarding {city}’s 6th Cycle Housing '
-             f'Element Update. '
-             f'<b class="text-bold">YIMBY Law</b> is a legal nonprofit working to make housing in California more '
-             f'accessible and affordable through enforcement of state law.\n'
-             f"We are writing to remind you of {city}'s legal duty in its housing element to affirmatively further "
-             f"fair housing, which entails 'taking meaningful actions... that overcome patterns of segregation' "
-             f"§8899.50(a)(1).\n")
+             f'Element Update. <b class="text-bold">YIMBY Law</b> is a legal nonprofit working to make housing in '
+             f'California more accessible and affordable through enforcement of state law.\n'
+             f"Per §8899.50(a)(1) of state code, {city}'s housing element must affirmatively further fair housing, "
+             f"which entails 'taking meaningful actions... that overcome patterns of segregation.'\n")
 
     backgr = (f'The City of {city} is uniquely positioned to affirmatively further fair housing, as {city} '
               f'is a wealthy, exclusionary city that Berkeley researchers identify as highly segregated from the '
@@ -56,7 +55,7 @@ def make_body(city):
     if city.how_much_less_brown() > .05 or city.how_much_less_black() > .05:
         backgr += ' than the rest of the Bay Area'
     backgr += '.\n'
-
+    custom = city.custom_text
     wh = ("In a 2021 report entitled 'Exclusionary Zoning: Its Effect on Racial Discrimination in the Housing Market,' "
           "economic advisors for the White House outline how exclusionary zoning, like yours, causes segregation. "
           "By banning apartments, your city pushes low income children to live in less resourced areas, which begets "
@@ -77,7 +76,7 @@ def make_body(city):
                '    <td><b class="text-bold">Salim Damerdji</b>, South Bay YIMBY</td>'
                "</tr>"
                "</table>")
-    return intro + backgr + wh + recs + signoff
+    return intro + custom + backgr + wh + recs + signoff
 
 
 font_css = CSS(string="""
@@ -107,7 +106,7 @@ tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
 cities = utils.get_exclusionary_cities()[:1]
 factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
-cities = ['Los Altos Hills']
+cities = ['Cupertino']
 for city_name in cities:
     city = factory.build(city_name)
     body = make_body(city)

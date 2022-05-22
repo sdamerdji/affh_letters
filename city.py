@@ -1,6 +1,6 @@
 import math
 import utils
-
+import custom_analysis
 
 class CityFactory:
     def __init__(self, obi_df, price_df):
@@ -32,6 +32,7 @@ class City:
         self.name = name
         self.pct_li = pct_li
         self.pop = pop
+        self.custom_text = custom_analysis.get_city_custom_analysis(name)
 
     def __repr__(self):
         return self.name
