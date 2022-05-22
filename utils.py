@@ -67,4 +67,4 @@ def get_city_rhna_targets(city):
     df = pd.read_excel('./data/rhna.xlsx', skiprows=3)
     df.set_index('Jurisdiction', inplace=True)
     vli, li, m, am, total = df.loc[city]
-    return vli, li, m, am, total
+    return int(vli), int(li), int(m), int(am), int(total)
