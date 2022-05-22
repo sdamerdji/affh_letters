@@ -63,7 +63,7 @@ class City:
         https://bayareaequityatlas.org/indicators/race-ethnicity#/
         """
         bay_area_white_pct = .39
-        delta = round(self.pct_white - bay_area_white_pct, 3)
+        delta = 1 - round(self.pct_white / bay_area_white_pct, 3)
         return max(delta, 0)
 
     def how_much_less_black(self):
@@ -75,7 +75,7 @@ class City:
         https://bayareaequityatlas.org/indicators/race-ethnicity#/
         """
         bay_area_black_pct = .06
-        delta = round(bay_area_black_pct - self.pct_black, 3)
+        delta = 1 - round(self.pct_black / bay_area_black_pct, 3)
         return max(delta, 0)
 
     def how_much_less_brown(self):
@@ -87,7 +87,7 @@ class City:
         https://bayareaequityatlas.org/indicators/race-ethnicity#/
         """
         bay_area_latino_pct = .06
-        delta = round(bay_area_latino_pct - self.pct_latino, 3)
+        delta = 1 - round(self.pct_latino / bay_area_latino_pct, 3)
         return max(delta, 0)
 
     def salary_to_buy(self):

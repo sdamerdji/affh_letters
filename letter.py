@@ -29,44 +29,42 @@ def make_body(city):
              f"§8899.50(a)(1).\n")
 
     backgr = (f'The City of {city} is uniquely positioned to affirmatively further fair housing, as {city} '
-              f'is a wealthy, exclusionary city that Berkeley researchers have found is highly segregated from the '
+              f'is a wealthy, exclusionary city that Berkeley researchers identify as highly segregated from the '
               f'rest of the Bay Area. This socioeconomic segregation is caused by the exclusionary '
               f'cost of housing in your community, where an average home, as of April 30th, costs '
-              f'${round(city.home_price):,}, which is only affordable to someone earning a salary '
-              f'of ${round(city.salary_to_buy()):,}')
+              f'<a href="https://www.zillow.com/research/data/">${int(round(city.home_price, -3)):,}</a>'
+              f', which is only affordable to someone earning a salary '
+              f'of ${int(round(city.salary_to_buy(), -3)):,}')
     if city.one_percenter_city():
         backgr += ', meaning <b class="text-bold">only the top 1% can afford to settle down in your community</b>'
     if city.exceeds_castle():
         backgr += (". To put a finer point on the level of affluence in your community, the average home in your " 
-                   "city costs more than French castles")
+                   'city costs more than <a href="www.forbes.com/sites/forbes-global-properties/2021/10/28/buying-a-french-chateau-can-cost-less-than-a-los-angeles-teardown/">French castles</a>')
         if city.exceeds_private_island():
-            backgr += " and private islands in the Caribbeans"
-    backgr += f'. It is thus no coincidence at all that your city is '
-    if city.how_much_whiter():
+            backgr += " and <a href='https://www.jamesedition.com/stories/real-estate/how-much-does-a-private-island-cost/'>private islands in the Caribbeans</a>"
+    backgr += f'. It is thus no coincidence that your city is '
+    if city.how_much_whiter() > .05:
         backgr += f'{round(city.how_much_whiter() * 100)}% whiter than the rest of the Bay'
-        if city.how_much_less_black() or city.how_much_less_brown():
+        if city.how_much_less_black() > .05 or city.how_much_less_brown() > .05:
             backgr += ', as well as '
-    if city.how_much_less_black():
+    if city.how_much_less_black() > .05:
         backgr += f'{round(city.how_much_less_black() * 100)}% less black'
-    if city.how_much_less_brown():
-        if city.how_much_less_black():
+    if city.how_much_less_brown() > .05:
+        if city.how_much_less_black() > .05:
             backgr += ' and '
-        backgr += f'{round(city.how_much_less_brown() * 100)}% less brown than the rest of the Bay'
+        backgr += f'{round(city.how_much_less_brown() * 100)}% less brown'
+    if city.how_much_less_brown() > .05 or city.how_much_less_black() > .05:
+        backgr += ' than the rest of the Bay Area'
     backgr += '.\n'
 
     wh = ("In a 2021 report entitled 'Exclusionary Zoning: Its Effect on Racial Discrimination in the Housing Market,' "
-          "the White House's leading economic advisors outlined the troves of academic research that shows how "
-          "exclusionary zoning, such as your city's, contributes to racial segregation. The White House's report "
-          "cites cutting-edge research that shows housing 'likely explains more than 30% of the Black-white racial "
-          "wealth gap.' By banning apartments and zoning working class families out of your city, your city, "
-          "award-winning Harvard research shows, is causing low income children to have worse life outcomes, from "
-          "health to income. Exclusionary zoning is not consistent with your city's values and it is not consistent "
-          "with your legal obligation to affirmatively further fair housing.\n")
+          "economic advisors for the White House outline how exclusionary zoning, like yours, causes segregation. "
+          "By banning apartments, your city pushes low income children to live in less resourced areas, which begets "
+          "worse life outcomes from health to income. The research is clear: exclusionary zoning violates your duty "
+          "to further fair housing.\n")
     recs = (f"To take meaningful actions that overcome patterns of segregation, we recommend you:\n"
-            f'1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give working class '
-            f"and middle class families the opportunity to share in the resources your city's high opportunity areas "
-            f"enjoys. Furthermore, ending apartment bans is no longer subject to lengthy CEQA analysis thanks to SB 10,"
-            f" so your city's apartment ban in R1 areas can be lifted tomorrow.\n"
+            f'1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give middle and '
+            f"working class families the opportunity to share in the resources your rich neighborhoods enjoy.\n"
             f'2. <b class="text-bold">Accommodate {city.affh_needed_li_homes()} low income homes in your site '
             f'inventory.</b> This is the number of homes required to bring the proportion of low income families '
             f'in your city in line with the rest of the Bay Area. While this number is large enough to be '
@@ -77,7 +75,6 @@ def make_body(city):
                "<table>"
                '<tr class="mb-1">'
                '    <td><b class="text-bold">Salim Damerdji</b>, South Bay YIMBY</td>'
-               '    <td class="px-1">(sdamerdji1@gmail.com)</td>'
                "</tr>"
                "</table>")
     return intro + backgr + wh + recs + signoff
@@ -108,9 +105,9 @@ font_config = FontConfiguration()
 
 tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
-cities = utils.get_exclusionary_cities()[:10]
+cities = utils.get_exclusionary_cities()[:1]
 factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
-
+cities = ['Los Altos Hills']
 for city_name in cities:
     city = factory.build(city_name)
     body = make_body(city)
