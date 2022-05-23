@@ -228,3 +228,7 @@ class City:
 
     def pct_sfz(self):
         return utils.get_city_sfz_pct(self.name)
+
+
+    def pct_ho_sfz(self):
+        return utils.get_city_sfz_ho_pct(self.name)

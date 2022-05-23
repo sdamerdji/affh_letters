@@ -87,3 +87,13 @@ def test_sfr_pct_data():
 def test_get_sfz_for_city():
     for city in utils.get_exclusionary_cities():
         assert utils.get_city_sfz_pct(city)
+
+
+def test_sfr_ho_pct_data():
+    df = utils.get_sfz_ho_data()
+    assert df.size
+
+
+def test_get_sfz_ho_for_city():
+    for city in utils.get_exclusionary_cities():
+        assert utils.get_city_sfz_ho_pct(city)
