@@ -109,4 +109,7 @@ def get_city_sfz_ho_pct(city):
     df = get_sfz_ho_data()
     if city == 'Foster City':
         city = 'Foster'
-    return round(df.loc[''.join(city.split())].values.item(), 3) * 100
+    if ''.join(city.split()) not in df.index.values:
+        print(city, " has no high opportunity areas.")
+        return 0
+    return round(df.loc[''.join(city.split())].values.item(), 1)

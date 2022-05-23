@@ -1,6 +1,8 @@
+from datetime import date
+
 from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
-from datetime import date
+
 import utils
 from city import CityFactory
 
@@ -38,7 +40,7 @@ def make_body(city):
         backgr += (f', meaning <b class="text-bold">only the richest {city.income_percent()} of households can afford '
                    f'to settle down in your community</b>')
     if city.exceeds_castle():
-        backgr += (". To put a finer point on the level of affluence in your community, the average home in your " 
+        backgr += (". To put a finer point on the level of affluence in your community, the average home in your "
                    'city costs more than <a href="www.forbes.com/sites/forbes-global-properties/2021/10/28/buying-a-french-chateau-can-cost-less-than-a-los-angeles-teardown/">French castles</a>')
         if city.exceeds_private_island():
             backgr += " and <a href='https://www.jamesedition.com/stories/real-estate/how-much-does-a-private-island-cost/'>private islands in the Caribbeans</a>"
@@ -66,14 +68,17 @@ def make_body(city):
             f'1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give middle and '
             f"working class families the opportunity to share in the resources your rich neighborhoods enjoy. "
             f'As of 2020, <b class="text-bold">your city banned apartments in over {city.pct_sfz()}% of residential'
-            f' areas, including in {city.pct_ho_sfz()}% of high opportunity residential areas.</b>\n'
-            f'2. <b class="text-bold">Accommodate {city.affh_needed_li_homes()} low income homes in your site '
-            f'inventory.</b> While substantially larger than the floor of {city.li_rhna + city.vli_rhna} low income '
-            f'homes required by RHNA, {city.affh_needed_li_homes()} is the number of homes required to bring the '
-            f'proportion of low income families '
-            f'in your city in line with the rest of the Bay Area. While this number is large enough to be '
-            f'politically challenging, it will always be politically challenging to overcome segregation, as AFFH '
-            f'requires.\n')
+            f' areas</b>')
+    if city.pct_ho_sfz() > city.pct_sfz() + 1:
+        recs += f', including in {city.pct_ho_sfz()}% of high opportunity residential areas'
+    recs += '.\n'
+    recs += (f'2. <b class="text-bold">Accommodate {city.affh_needed_li_homes()} low income homes in your site '
+             f'inventory.</b> While substantially larger than the floor of {city.li_rhna + city.vli_rhna} low income '
+             f'homes required by RHNA, {city.affh_needed_li_homes()} is the number of homes required to bring the '
+             f'proportion of low income families '
+             f'in your city in line with the rest of the Bay Area. While this number is large enough to be '
+             f'politically challenging, it will always be politically challenging to overcome segregation, as AFFH '
+             f'requires.\n')
     signoff = ('<br>'
                "Thank you,"
                "<table>"
@@ -133,5 +138,3 @@ for city_name in cities:
     html = HTML(string=html_str)
 
     html.write_pdf(f'./letters/{city}.pdf', stylesheets=[tailwind_css, font_css], font_config=font_config)
-
-

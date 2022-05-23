@@ -97,10 +97,3 @@ def test_sfr_ho_pct_data():
 def test_get_sfz_ho_for_city():
     for city in utils.get_exclusionary_cities():
         assert utils.get_city_sfz_ho_pct(city)
-
-def test_sfr_ho_dfs():
-    all_df = utils.get_sfz_data()
-    ho_df = utils.get_sfz_ho_data()
-    for city in utils.get_exclusionary_cities():
-        if (all_df.loc[city].item() - ho_df.loc[city].item()) > .01:
-            assert False
