@@ -4,6 +4,8 @@ import pandas as pd
 OBI_DATA = None
 ZILLOW_DATA = None
 SFZ_DATA = None
+SFZ_HO_DATA = None
+
 
 def get_obi_data():
     """Load OBI data only once."""
@@ -22,6 +24,15 @@ def get_sfz_data():
         return SFZ_DATA
     SFZ_DATA = pd.read_csv('./data/sfr_pct.csv', index_col=0)
     return SFZ_DATA
+
+
+def get_sfz_ho_data():
+    """Load OBI data only once."""
+    global SFZ_HO_DATA
+    if SFZ_HO_DATA is not None:
+        return SFZ_HO_DATA
+    SFZ_HO_DATA = pd.read_csv('./data/sfr_ho_pct.csv', index_col=0)
+    return SFZ_HO_DATA
 
 
 def get_zillow_data():
@@ -89,6 +100,13 @@ def get_city_rhna_targets(city):
 
 def get_city_sfz_pct(city):
     df = get_sfz_data()
+    if city == 'Foster City':
+        city = 'Foster'
+    return df.loc[''.join(city.split())].values.item()
+
+
+def get_city_sfz_ho_pct(city):
+    df = get_sfz_ho_data()
     if city == 'Foster City':
         city = 'Foster'
     return df.loc[''.join(city.split())].values.item()
