@@ -80,7 +80,8 @@ def test_racial_change():
 
 
 def test_sfr_pct_data():
-    df = utils.get_sfr_data()
+    df = utils.get_sfz_data()
+    assert df.size
 
 
 def test_get_sfz_for_city():
