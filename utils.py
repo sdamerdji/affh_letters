@@ -109,4 +109,4 @@ def get_city_sfz_ho_pct(city):
     df = get_sfz_ho_data()
     if city == 'Foster City':
         city = 'Foster'
-    return df.loc[''.join(city.split())].values.item()
+    return round(df.loc[''.join(city.split())].values.item(), 3) * 100

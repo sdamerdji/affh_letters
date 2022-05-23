@@ -66,7 +66,7 @@ def make_body(city):
             f'1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give middle and '
             f"working class families the opportunity to share in the resources your rich neighborhoods enjoy. "
             f'As of 2020, <b class="text-bold">your city banned apartments in over {city.pct_sfz()}% of residential'
-            f' areas, including {city.pct}.</b>\n'
+            f' areas, including in {city.pct_ho_sfz()}% of high opportunity residential areas.</b>\n'
             f'2. <b class="text-bold">Accommodate {city.affh_needed_li_homes()} low income homes in your site '
             f'inventory.</b> While substantially larger than the floor of {city.li_rhna + city.vli_rhna} low income '
             f'homes required by RHNA, {city.affh_needed_li_homes()} is the number of homes required to bring the '
@@ -109,9 +109,8 @@ font_config = FontConfiguration()
 
 tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
-cities = utils.get_exclusionary_cities()[:1]
+cities = utils.get_exclusionary_cities()
 factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
-cities = ['Cupertino']
 for city_name in cities:
     city = factory.build(city_name)
     body = make_body(city)
