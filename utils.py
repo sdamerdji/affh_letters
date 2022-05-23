@@ -3,7 +3,7 @@ import pandas as pd
 """Dataframe with Bay Area segregation statistics. Courtesy of Othering and Belonging Institute (hence OBI)"""
 OBI_DATA = None
 ZILLOW_DATA = None
-
+SFZ_DATA = None
 
 def get_obi_data():
     """Load OBI data only once."""
@@ -13,6 +13,15 @@ def get_obi_data():
     OBI_DATA = pd.read_excel('./data/bay.area_divergence.download.xlsx',
                              sheet_name='Inter-Municipal Divergence')
     return OBI_DATA
+
+
+def get_sfz_data():
+    """Load OBI data only once."""
+    global SFZ_DATA
+    if SFZ_DATA is not None:
+        return SFZ_DATA
+    SFZ_DATA = pd.read_csv('./data/sfr_pct.csv', index_col=0)
+    return SFZ_DATA
 
 
 def get_zillow_data():
@@ -76,3 +85,10 @@ def get_city_rhna_targets(city):
     df.set_index('Jurisdiction', inplace=True)
     vli, li, m, am, total = df.loc[city]
     return int(vli), int(li), int(m), int(am), int(total)
+
+
+def get_city_sfz_pct(city):
+    df = get_sfz_data()
+    if city == 'Foster City':
+        city = 'Foster'
+    return df.loc[''.join(city.split())].values.item()

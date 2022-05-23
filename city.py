@@ -43,6 +43,7 @@ class City:
         self.m_rhna = m_rhna
         self.am_rhna = am_rhna
         self.tot_rhna = tot_rhna
+        self.black_delta, self.white_delta, self.brown_delta = utils.get_racial_change(name)
 
     def __repr__(self):
         return self.name
@@ -88,6 +89,18 @@ class City:
         bay_area_black_pct = .06
         delta = 1 - round(self.pct_black / bay_area_black_pct, 3)
         return max(delta, 0)
+
+    def black_population_attrition(self):
+        """How many fewer Black residents are there since 2010?"""
+        return self.black_delta
+
+    def brown_population_attrition(self):
+        """How many fewer brown residents are there since 2010?"""
+        return self.brown_delta
+
+    def white_population_gain(self):
+        """How many more white residents are there since 2010?"""
+        return self.white_delta
 
     def how_much_less_brown(self):
         """By what percent is this city less brown than the rest of the Bay Area?
@@ -212,3 +225,6 @@ class City:
         li_pct_bay_area = .488
         n_ppl_per_home = 2.9
         return math.ceil(self.pop * (li_pct_bay_area - self.pct_li) / n_ppl_per_home)
+
+    def pct_sfz(self):
+        return utils.get_city_sfz_pct(self.name)

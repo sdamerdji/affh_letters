@@ -74,5 +74,15 @@ def test_rhna_targets():
 def test_li_pct():
     assert 1 < utils.get_pct_li('Los Altos') * 100 < 20
 
+
 def test_racial_change():
     df = utils.get_racial_change('Cupertino')
+
+
+def test_sfr_pct_data():
+    df = utils.get_sfr_data()
+
+
+def test_get_sfz_for_city():
+    for city in utils.get_exclusionary_cities():
+        assert utils.get_city_sfz_pct(city)

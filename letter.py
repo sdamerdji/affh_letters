@@ -109,7 +109,7 @@ tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
 cities = utils.get_exclusionary_cities()[:1]
 factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
-cities = ['Los Altos Hills']
+cities = ['Cupertino']
 for city_name in cities:
     city = factory.build(city_name)
     body = make_body(city)
