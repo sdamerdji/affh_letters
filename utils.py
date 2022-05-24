@@ -68,8 +68,8 @@ def get_exclusionary_cities():
 
 
 def get_non_obi_cities():
-    cities = ['Atherton', 'Brisbane', 'Colma', 'Cotati', 'Fairfax', 'Larkspur', 'Monte Sereno', 'Ross', 'Sausalito',
-              'St. Helena', 'Woodside', 'Yountville']
+    cities = ['Atherton', 'Belvedere', 'Brisbane', 'Colma', 'Cotati', 'Fairfax', 'Larkspur', 'Monte Sereno', 'Ross',
+              'Sausalito', 'St. Helena', 'Woodside', 'Yountville']
     return cities
 
 def get_exclusionary_non_obi_cities():

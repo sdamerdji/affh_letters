@@ -113,3 +113,5 @@ def test_segregation_rankings():
 def test_non_obi_cities():
     cities = utils.get_exclusionary_non_obi_cities()
     assert cities.size
+    assert 'Belvedere' in cities.index
+    assert 'Atherton' in cities.index
