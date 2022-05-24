@@ -2,7 +2,7 @@ from datetime import date
 
 from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
-
+import re
 import utils
 from city import CityFactory
 
@@ -81,7 +81,11 @@ def make_body(city):
     recs = ("To take meaningful actions that overcome patterns of segregation, we recommend you:\n"
             '1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give middle and '
             "working class families the opportunity to share in the resources your rich neighborhoods enjoy. "
-            'As of 2020, <b class="text-bold">your city banned apartments in over ')
+            'As of 2020, <b class="text-bold">your city banned apartments in ')
+    if city.pct_ho_sfz() <= 99:
+        # Some cities like Atherton have 100% sfz, so i cant say 'over' in that case
+        recs += 'over '
+
     if city.pct_ho_sfz() > city.pct_sfz() + 1:
         recs += (f'{city.pct_sfz()}% of residential areas</b>'
                  f', including in {city.pct_ho_sfz()}% of high opportunity residential areas')
@@ -105,6 +109,13 @@ def make_body(city):
                '    <td><b class="text-bold">Salim Damerdji</b>, South Bay YIMBY</td>'
                "</tr>"
                "</table>")
+    if city.name == 'Millbrae':
+        # Millbrae actually has a higher li+vli RHNA than our li+vli recommendation. Reformat its recommendations.
+        recs = recs.split('\n')[1]
+        recs = recs[len('1. '):]
+        recs = 'To take meaningful actions that overcome patterns of segregation, we recommend you ' + recs
+        recs = re.sub('End apartment', 'end apartment', recs)
+        recs += '\n'
     return intro + backgr + wh + recs + signoff
 
 
@@ -134,6 +145,7 @@ font_config = FontConfiguration()
 tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
 cities = utils.get_exclusionary_cities()
+cities = ['Millbrae']
 factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
 for city_name in cities:
     city = factory.build(city_name)
