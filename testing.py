@@ -96,4 +96,20 @@ def test_sfr_ho_pct_data():
 
 def test_get_sfz_ho_for_city():
     for city in utils.get_exclusionary_cities():
-        assert utils.get_city_sfz_ho_pct(city)
+        if city != 'Morgan Hill': # Morgan Hill has no high opportunity areas. Rethink inclusion in project.
+            assert utils.get_city_sfz_ho_pct(city)
+
+
+def test_segregation_rankings():
+    cities = utils.get_exclusionary_cities()
+    df = utils.get_obi_data()
+    cities = df[df['Level of Segregation'] == 'High Segregation']
+
+    # And just pick the rich ones
+    cities = cities[cities['Median Household Income (2019 ACS)'] > df['Median Household Income (2019 ACS)'].mean()]
+    cities = cities['Cities/Towns'].values.tolist()
+
+
+def test_non_obi_cities():
+    cities = utils.get_exclusionary_non_obi_cities()
+    assert cities.size

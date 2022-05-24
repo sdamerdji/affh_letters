@@ -1,6 +1,4 @@
 import math
-
-import custom_analysis
 import utils
 
 
@@ -37,7 +35,6 @@ class City:
         self.name = name
         self.pct_li = pct_li
         self.pop = pop
-        self.custom_text = custom_analysis.get_city_custom_analysis(name)
         self.vli_rhna = vli_rhna
         self.li_rhna = li_rhna
         self.m_rhna = m_rhna
@@ -92,15 +89,15 @@ class City:
 
     def black_population_attrition(self):
         """How many fewer Black residents are there since 2010?"""
-        return self.black_delta
+        return max(self.black_delta, 0)
 
     def brown_population_attrition(self):
         """How many fewer brown residents are there since 2010?"""
-        return self.brown_delta
+        return max(self.brown_delta, 0)
 
     def white_population_gain(self):
         """How many more white residents are there since 2010?"""
-        return self.white_delta
+        return max(self.white_delta, 0)
 
     def how_much_less_brown(self):
         """By what percent is this city less brown than the rest of the Bay Area?

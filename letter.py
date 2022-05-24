@@ -57,20 +57,37 @@ def make_body(city):
         backgr += f'{round(city.how_much_less_brown() * 100)}% less brown'
     if city.how_much_less_brown() > .05 or city.how_much_less_black() > .05:
         backgr += ' than the rest of the Bay Area'
-    backgr += '.\n'
-    custom = city.custom_text
+    backgr += '.'
+    if city.black_population_attrition() or city.brown_population_attrition() or city.white_population_gain():
+        backgr += " Sadly, your city's demographics have trended in an even less equitable direction, "
+        if city.black_population_attrition():
+            backgr += f'losing {city.black_population_attrition()} black residents'
+            if city.brown_population_attrition():
+                backgr += ' and '
+        if city.brown_population_attrition():
+            backgr += f'losing {city.brown_population_attrition()} brown residents'
+        if (city.black_population_attrition() or city.brown_population_attrition()) and city.white_population_gain():
+            backgr += f' while gaining {city.white_population_gain()} white residents'
+        backgr += ' since 2010.'
+    backgr += '\n'
+
     wh = ("In a 2021 report entitled 'Exclusionary Zoning: Its Effect on Racial Discrimination in the Housing Market,' "
           "economic advisors for the White House outline how exclusionary zoning, like yours, causes segregation. "
           "Your exclusionary zoning pushes low income children to live in less resourced areas, which begets "
           "worse life outcomes from health to income. The research is clear: exclusionary zoning violates your duty "
           "to further fair housing.\n")
-    recs = (f"To take meaningful actions that overcome patterns of segregation, we recommend you:\n"
-            f'1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give middle and '
-            f"working class families the opportunity to share in the resources your rich neighborhoods enjoy. "
-            f'As of 2020, <b class="text-bold">your city banned apartments in over {city.pct_sfz()}% of residential'
-            f' areas</b>')
+    recs = ("To take meaningful actions that overcome patterns of segregation, we recommend you:\n"
+            '1. <b class="text-bold">End apartment bans in high opportunity areas.</b> This will give middle and '
+            "working class families the opportunity to share in the resources your rich neighborhoods enjoy. "
+            'As of 2020, <b class="text-bold">your city banned apartments in over ')
     if city.pct_ho_sfz() > city.pct_sfz() + 1:
-        recs += f', including in {city.pct_ho_sfz()}% of high opportunity residential areas'
+        recs += (f'{city.pct_sfz()}% of residential areas</b>'
+                 f', including in {city.pct_ho_sfz()}% of high opportunity residential areas')
+    elif city.pct_ho_sfz():
+        recs += f'{city.pct_ho_sfz()}% of high opportunity residential areas</b>'
+    else:
+        # Morgan Hill has no high opportunity areas, so this condition is for Morgan Hill
+        recs += f'{city.pct_sfz()}% of residential areas</b>'
     recs += '.\n'
     recs += (f'2. <b class="text-bold">Accommodate {city.affh_needed_li_homes()} low income homes in your site '
              f'inventory.</b> While substantially larger than the floor of {city.li_rhna + city.vli_rhna} low income '
@@ -86,7 +103,7 @@ def make_body(city):
                '    <td><b class="text-bold">Salim Damerdji</b>, South Bay YIMBY</td>'
                "</tr>"
                "</table>")
-    return intro + custom + backgr + wh + recs + signoff
+    return intro + backgr + wh + recs + signoff
 
 
 font_css = CSS(string="""

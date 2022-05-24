@@ -67,6 +67,35 @@ def get_exclusionary_cities():
     return cities
 
 
+def get_non_obi_cities():
+    cities = ['Atherton', 'Brisbane', 'Colma', 'Cotati', 'Fairfax', 'Larkspur', 'Monte Sereno', 'Ross', 'Sausalito',
+              'St. Helena', 'Woodside', 'Yountville']
+    return cities
+
+def get_exclusionary_non_obi_cities():
+    df = pd.read_csv('./data/income.csv')
+    non_obi = get_non_obi_cities()
+    non_obi_columns = [c for c in df.columns if any((city in c for city in get_non_obi_cities()))]
+    mean_income = df[df['Label (Grouping)'] == 'Mean income (dollars)'].T
+    mean_income = mean_income.loc[non_obi_columns]
+    household_incomes = mean_income[mean_income.index.str.contains('Household')]
+    household_incomes.index = household_incomes.index.str.split(',').str[0].str.split().str[:-1].str.join(' ')
+    household_incomes.columns = ['avg_income']
+    # Get top 5%er cities
+    household_incomes['avg_income'] = household_incomes['avg_income'].str.replace(',', '').astype(float)
+    household_incomes = household_incomes[household_incomes.avg_income > 221572]
+
+    df = pd.read_csv('./data/race.csv')
+    df.iloc[:, 0] = ['Total', '', 'White', 'Black', 'Asian'] + [''] * 66
+    df = df.T
+    df.index = df.index.str.split(',').str[0].str.split().str[:-1].str.join(' ')
+    df.columns = df.iloc[0]
+    df = df[[c in household_incomes.index for c in df.index]]
+    df = df[[c for c in df.columns if c]]
+
+    result = pd.merge(df, household_incomes, left_index=True, right_index=True)
+    return result
+
 def get_abag_data(city, sheet='POPEMP-21'):
     city = '_'.join(city.split(' '))
     subdir = f'./data/ABAG-MTC Housing Needs Data Packets/{city}'
