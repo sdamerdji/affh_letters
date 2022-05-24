@@ -108,6 +108,9 @@ def make_body(city):
                '<tr class="mb-1">'
                '    <td><b class="text-bold">Salim Damerdji</b>, South Bay YIMBY</td>'
                "</tr>"
+               '<tr class="mb-1">'
+               '    <td><b class="text-bold">Keith Diggs</b>, YIMBY Law</td>'
+               "</tr>"
                "</table>")
     if city.name == 'Millbrae':
         # Millbrae actually has a higher li+vli RHNA than our li+vli recommendation. Reformat its recommendations.
