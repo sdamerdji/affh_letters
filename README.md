@@ -7,3 +7,5 @@ Berkeley's OBI data is available at the bottom of this page: https://belonging.b
 
 Home price data comes from Zillow: https://www.zillow.com/research/data/
 I use Zillow Home Value Index for all homes (seasonally adjusted)
+
+Berkeley's OBI dataset excludes a few cities (e.g. Belvedere and Woodside), so for those cities I use 2019 ACS data (race.csv, income.csv)

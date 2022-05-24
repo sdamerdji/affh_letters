@@ -53,7 +53,7 @@ def simplify_zillow_data(df):
     return df
 
 
-def get_exclusionary_cities():
+def get_exclusionary_obi_cities():
     """Return list of city names that OBI labels as high intercity segregation & above avg income & home price."""
     df = get_obi_data()
 
@@ -67,12 +67,18 @@ def get_exclusionary_cities():
     return cities
 
 
+def get_exclusionary_cities():
+    result = get_exclusionary_obi_cities() + get_exclusionary_non_obi_cities()
+    result.sort()
+    return result
+
+
 def get_non_obi_cities():
     cities = ['Atherton', 'Belvedere', 'Brisbane', 'Colma', 'Cotati', 'Fairfax', 'Larkspur', 'Monte Sereno', 'Ross',
               'Sausalito', 'St. Helena', 'Woodside', 'Yountville']
     return cities
 
-def get_exclusionary_non_obi_cities():
+def get_exclusionary_non_obi_data():
     df = pd.read_csv('./data/income.csv')
     non_obi = get_non_obi_cities()
     non_obi_columns = [c for c in df.columns if any((city in c for city in get_non_obi_cities()))]
@@ -82,7 +88,8 @@ def get_exclusionary_non_obi_cities():
     household_incomes.index = household_incomes.index.str.split(',').str[0].str.split().str[:-1].str.join(' ')
     household_incomes.columns = ['avg_income']
     # Get top 5%er cities
-    household_incomes['avg_income'] = household_incomes['avg_income'].str.replace(',', '').astype(float)
+    household_incomes = household_incomes.assign(avg_income=lambda d: d['avg_income'].str.replace(',', ''))
+    household_incomes = household_incomes.assign(avg_income=lambda d: d['avg_income'].astype(int))
     household_incomes = household_incomes[household_incomes.avg_income > 221572]
 
     df = pd.read_csv('./data/race.csv')
@@ -92,9 +99,24 @@ def get_exclusionary_non_obi_cities():
     df.columns = df.iloc[0]
     df = df[[c in household_incomes.index for c in df.index]]
     df = df[[c for c in df.columns if c]]
+    for c in ['Total', 'White', 'Black', 'Asian']:
+        df[c] = df[c].str.replace(',', '').astype(float)
 
+    latino = pd.read_csv('./data/latino.csv')
+    latino = latino.T
+    latino.index = latino.index.str.split(',').str[0].str.split().str[:-1].str.join(' ')
+    latino = latino[[c in household_incomes.index for c in latino.index]]
+    latino = latino.iloc[:, [0, 2]].copy()
+    latino.columns = ['Population', 'Latino']
+    latino['Population'] = latino.Population.str.replace(',', '').astype(int)
+    latino['Latino'] = latino['Latino'].str.replace(',', '').astype(int)
+    latino['Latino'] = latino['Latino']
     result = pd.merge(df, household_incomes, left_index=True, right_index=True)
+    result['Latino'] = latino['Latino']
     return result
+
+def get_exclusionary_non_obi_cities():
+    return get_exclusionary_non_obi_data().index.values.tolist()
 
 def get_abag_data(city, sheet='POPEMP-21'):
     city = '_'.join(city.split(' '))

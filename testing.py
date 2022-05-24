@@ -57,11 +57,25 @@ def test_city_race_disparity_methods():
     assert los_altos_hills.how_much_less_brown() * 100 > 5
 
 
-def test_city_methods2():
+def test_city_methods_another_city():
     cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     cupertino = cf.build('Cupertino')
     assert 200000 < cupertino.salary_to_buy() < 500000
     assert cupertino.income_percent() == '2%'
+
+
+def test_non_obi_cities_city_factor():
+    """Ensure CityFactor works for non obi cities."""
+    cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    belvedere = cf.build('Belvedere')
+    assert 500000 < belvedere.salary_to_buy()
+    assert belvedere.one_percenter_city()
+    assert belvedere.exceeds_castle()
+    assert belvedere.exceeds_private_island()
+    assert belvedere.cost_relative_to_country() > 9
+    assert belvedere.min_wage_jobs() > 10
+    assert belvedere.income_percent() == '1%'
+    assert 100 < belvedere.affh_needed_li_homes()
 
 
 def test_rhna_targets():
@@ -112,6 +126,6 @@ def test_segregation_rankings():
 
 def test_non_obi_cities():
     cities = utils.get_exclusionary_non_obi_cities()
-    assert cities.size
-    assert 'Belvedere' in cities.index
-    assert 'Atherton' in cities.index
+    assert len(cities)
+    assert 'Belvedere' in cities
+    assert 'Atherton' in cities

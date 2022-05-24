@@ -4,12 +4,35 @@ import utils
 
 class CityFactory:
     def __init__(self, obi_df, price_df):
-        self._obi_data = obi_df
+        self._obi_df = obi_df
         self._price_df = price_df
+        self._non_obi_cities = utils.get_non_obi_cities()
+        self._non_obi_df = utils.get_exclusionary_non_obi_data()
 
     def build(self, city):
-        assert city in self._obi_data['Cities/Towns'].values
-        city_obi_data = self._obi_data.query('`Cities/Towns` == @city')
+        if city in self._non_obi_cities:
+            return self.build_non_obi(city)
+        return self.build_obi(city)
+
+    def build_non_obi(self, city):
+        assert city in self._non_obi_df.index
+        city_data = self._non_obi_df.loc[city]
+        home_price = self._price_df.query('`City` == @city')['2022-04-30'].item()
+        pop = city_data['Total'].item()
+        pct_white = round(city_data['White'].item() / pop, 3)
+        pct_black = round(city_data['Black'].item() / pop, 3)
+        pct_latino = round(city_data['Latino'].item() / pop, 3)
+        pct_asian = round(city_data['Asian'].item() / pop, 3)
+        pct_li = utils.get_pct_li(city)
+
+        vli_rhna, li_rhna, m_rhna, am_rhna, tot_rhna = utils.get_city_rhna_targets(city)
+        return City(home_price=home_price, pct_white=pct_white, pct_black=pct_black,
+                    pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li, pop=pop,
+                    vli_rhna=vli_rhna, li_rhna=li_rhna, m_rhna=m_rhna, am_rhna=am_rhna, tot_rhna=tot_rhna, obi=False)
+
+    def build_obi(self, city):
+        assert city in self._obi_df['Cities/Towns'].values
+        city_obi_data = self._obi_df.query('`Cities/Towns` == @city')
         home_price = self._price_df.query('`City` == @city')['2022-04-30'].item()
         pct_white = round(city_obi_data['White'].item(), 3)
         pct_black = round(city_obi_data['Black'].item(), 3)
@@ -20,12 +43,12 @@ class CityFactory:
         vli_rhna, li_rhna, m_rhna, am_rhna, tot_rhna = utils.get_city_rhna_targets(city)
         return City(home_price=home_price, pct_white=pct_white, pct_black=pct_black,
                     pct_latino=pct_latino, pct_asian=pct_asian, name=city, pct_li=pct_li, pop=pop,
-                    vli_rhna=vli_rhna, li_rhna=li_rhna, m_rhna=m_rhna, am_rhna=am_rhna, tot_rhna=tot_rhna)
+                    vli_rhna=vli_rhna, li_rhna=li_rhna, m_rhna=m_rhna, am_rhna=am_rhna, tot_rhna=tot_rhna, obi=True)
 
 
 class City:
     def __init__(self, home_price, pct_white, pct_black, pct_latino, pct_asian, name, pct_li, pop,
-                 vli_rhna, li_rhna, m_rhna, am_rhna, tot_rhna):
+                 vli_rhna, li_rhna, m_rhna, am_rhna, tot_rhna, obi):
         self._home_price = home_price
         self._median_salary = 0
         self.pct_white = pct_white
@@ -41,6 +64,7 @@ class City:
         self.am_rhna = am_rhna
         self.tot_rhna = tot_rhna
         self.black_delta, self.white_delta, self.brown_delta = utils.get_racial_change(name)
+        self.obi = obi
 
     def __repr__(self):
         return self.name

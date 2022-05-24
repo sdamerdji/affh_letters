@@ -30,12 +30,14 @@ def make_body(city):
              f"which entails 'taking meaningful actions... that overcome patterns of segregation.'\n")
 
     backgr = (f'The City of {city} is uniquely positioned to affirmatively further fair housing, as {city} '
-              f'is a wealthy, exclusionary city that Berkeley researchers identify as highly segregated from the '
-              f'rest of the Bay Area. This socioeconomic segregation is caused by the exclusionary '
-              f'cost of housing in your community, where an average home, as of April 30th, costs '
-              f'<a href="https://www.zillow.com/research/data/">${int(round(city.home_price, -3)):,}</a>'
-              f', which is only affordable to someone earning a salary '
-              f'of ${int(round(city.salary_to_buy(), -3)):,}')
+              f'is a wealthy, exclusionary city')
+    if city.obi:
+        backgr += ' that Berkeley researchers identify as highly segregated from the rest of the Bay Area'
+    backgr += (f'. This socioeconomic segregation is caused by the exclusionary '
+               f'cost of housing in your community, where an average home, as of April 30th, costs '
+               f'<a href="https://www.zillow.com/research/data/">${int(round(city.home_price, -3)):,}</a>'
+               f', which is only affordable to someone earning a salary '
+               f'of ${int(round(city.salary_to_buy(), -3)):,}')
     if city.income_percent():
         backgr += (f', meaning <b class="text-bold">only the richest {city.income_percent()} of households can afford '
                    f'to settle down in your community</b>')
