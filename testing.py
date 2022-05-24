@@ -1,5 +1,5 @@
 import utils
-import city
+from city import CityFactory
 
 
 def test_get_exclusionary_cities():
@@ -30,14 +30,14 @@ def test_get_abag_data():
 
 
 def test_city_factory():
-    cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     los_altos = cf.build('Los Altos')
     assert los_altos.pct_white > 0.50
     assert los_altos.home_price > 4000000
 
 
 def test_city_cost_methods():
-    cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     los_altos = cf.build('Los Altos')
     assert 500000 < los_altos.salary_to_buy() < 700000
     assert los_altos.one_percenter_city()
@@ -50,7 +50,7 @@ def test_city_cost_methods():
 
 
 def test_city_race_disparity_methods():
-    cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     los_altos_hills = cf.build('Los Altos Hills')
     assert los_altos_hills.how_much_whiter() * 100 > 5
     assert los_altos_hills.how_much_less_black() * 100 > 5
@@ -58,7 +58,7 @@ def test_city_race_disparity_methods():
 
 
 def test_city_methods_another_city():
-    cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     cupertino = cf.build('Cupertino')
     assert 200000 < cupertino.salary_to_buy() < 500000
     assert cupertino.income_percent() == '2%'
@@ -66,7 +66,7 @@ def test_city_methods_another_city():
 
 def test_non_obi_cities_city_factor():
     """Ensure CityFactor works for non obi cities."""
-    cf = city.CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
     belvedere = cf.build('Belvedere')
     assert 500000 < belvedere.salary_to_buy()
     assert belvedere.one_percenter_city()
@@ -129,4 +129,3 @@ def test_non_obi_cities():
     assert len(cities)
     assert 'Belvedere' in cities
     assert 'Atherton' in cities
-
