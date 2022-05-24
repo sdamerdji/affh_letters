@@ -60,7 +60,7 @@ def make_body(city):
     if city.how_much_less_brown() > .05 or city.how_much_less_black() > .05:
         backgr += ' than the rest of the Bay Area'
     backgr += '.'
-    if city.black_population_attrition() or city.brown_population_attrition() or city.white_population_gain():
+    if city.black_population_attrition() or city.brown_population_attrition():
         backgr += " Sadly, your city's demographics have trended in an even less equitable direction, "
         if city.black_population_attrition():
             backgr += f'losing {city.black_population_attrition()} black residents'
@@ -87,13 +87,13 @@ def make_body(city):
         recs += 'over '
 
     if city.pct_ho_sfz() > city.pct_sfz() + 1:
-        recs += (f'{city.pct_sfz()}% of residential areas</b>'
-                 f', including in {city.pct_ho_sfz()}% of high opportunity residential areas')
+        recs += (f'{city.pct_sfz():.1f}% of residential areas</b>'
+                 f', including in {city.pct_ho_sfz():.1f}% of high opportunity residential areas')
     elif city.pct_ho_sfz():
-        recs += f'{city.pct_ho_sfz()}% of high opportunity residential areas</b>'
+        recs += f'{city.pct_ho_sfz():.1f}% of high opportunity residential areas</b>'
     else:
         # Morgan Hill has no high opportunity areas, so this condition is for Morgan Hill
-        recs += f'{city.pct_sfz()}% of residential areas</b>'
+        recs += f'{city.pct_sfz():.1f}% of residential areas</b>'
     recs += '.\n'
     recs += (f'2. <b class="text-bold">Accommodate {city.affh_needed_li_homes()} low income homes in your site '
              f'inventory.</b> While substantially larger than the floor of {city.li_rhna + city.vli_rhna} low income '
