@@ -110,8 +110,13 @@ def make_body(city):
                "</tr>"
                '<tr class="mb-1">'
                '    <td><b class="text-bold">Keith Diggs</b>, YIMBY Law</td>'
-               "</tr>"
-               "</table>")
+               "</tr>")
+    if city.name in ('Orinda, Moraga', 'Clayton', 'Danville', 'San Ramon'):
+        signoff += ('<tr class="mb-1">'
+                    '    <td><b class="text-bold">Jeremy Levine</b>, Legislative and Political Director '
+                    'for Contra Costa Young Democrats</td>'
+                    "</tr>")
+    signoff += "</table>"
     if city.name == 'Millbrae':
         # Millbrae actually has a higher li+vli RHNA than our li+vli recommendation. Reformat its recommendations.
         recs = recs.split('\n')[1]
