@@ -121,7 +121,7 @@ class City:
 
     def white_population_gain(self):
         """How many more white residents are there since 2010?"""
-        return max(self.white_delta, 0)
+        return max(-self.white_delta, 0)
 
     def how_much_less_brown(self):
         """By what percent is this city less brown than the rest of the Bay Area?

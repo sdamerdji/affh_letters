@@ -30,11 +30,11 @@ def make_body(city):
              f"which entails 'taking meaningful actions... that overcome patterns of segregation.'\n")
 
     backgr = (f'The City of {city} is uniquely positioned to affirmatively further fair housing, as {city} '
-              f'is a wealthy, exclusionary city')
+              f'is a wealthy, exclusionary city ')
     if city.obi:
-        backgr += ' that Berkeley researchers identify as highly segregated from the rest of the Bay Area'
-    backgr += (f'. This socioeconomic segregation is caused by the exclusionary '
-               f'cost of housing in your community, where an average home, as of April 30th, costs '
+        backgr += 'that researchers with the Othering and Belonging Institute at UC Berkeley identify as highly '
+    backgr += (f'segregated from the rest of the Bay Area. This socioeconomic segregation is caused by the '
+               f'exclusionary cost of housing in your community, where an average home, as of April 30th, costs '
                f'<a href="https://www.zillow.com/research/data/">${int(round(city.home_price, -3)):,}</a>'
                f', which is only affordable to someone earning a salary '
                f'of ${int(round(city.salary_to_buy(), -3)):,}')
@@ -42,7 +42,7 @@ def make_body(city):
         backgr += (f', meaning <b class="text-bold">only the richest {city.income_percent()} of households can afford '
                    f'to settle down in your community</b>')
     if city.exceeds_castle():
-        backgr += (". To put a finer point on the level of affluence in your community, the average home in your "
+        backgr += (". To put a finer point on the level of affluence in your city, the average home in your "
                    'city costs more than <a href="www.forbes.com/sites/forbes-global-properties/2021/10/28/buying-a-french-chateau-can-cost-less-than-a-los-angeles-teardown/">French castles</a>')
         if city.exceeds_private_island():
             backgr += " and <a href='https://www.jamesedition.com/stories/real-estate/how-much-does-a-private-island-cost/'>private islands in the Caribbeans</a>"

@@ -137,7 +137,7 @@ def get_pct_li(city):
 def get_racial_change(city):
     df = get_abag_data(city, 'POPEMP-02')
     df.set_index('Year', inplace=True)
-    deltas = df.loc[2019] - df.loc[2010]
+    deltas = df.loc[2010] - df.loc[2019]
     black, white, brown = deltas[2], deltas[3], deltas[5]
     return black, white, brown
 
