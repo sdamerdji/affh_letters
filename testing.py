@@ -1,5 +1,6 @@
 import utils
 from city import CityFactory
+import pandas as pd
 
 
 def test_get_exclusionary_cities():
@@ -129,3 +130,20 @@ def test_non_obi_cities():
     assert len(cities)
     assert 'Belvedere' in cities
     assert 'Atherton' in cities
+
+
+def test_one_pctr_cities():
+    cities = utils.get_exclusionary_cities()
+    result = []
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    for city in cities:
+        c = cf.build(city)
+
+        if c.one_percenter_city():
+            print(city, c.pct_ho_sfz())
+
+
+def test_city_contacts():
+    cities = utils.get_exclusionary_cities()
+    contactable = pd.read_csv('./letter_data/emails.csv', names=['city', 'emails'])
+    assert set(cities) <= set(contactable.city)
