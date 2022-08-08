@@ -14,7 +14,7 @@ Thanks Sid!
 header = """
 <div class="text-center">
     <img class="h-20 inline"
-    src="file:./letter_data/yimby_law_logo.png" />
+    src="file:./letter_data/sb_yimby_logo.png" />
 </div>
 """
 
@@ -23,9 +23,9 @@ def make_body(city):
     today = date.today().strftime("%B %d, %Y")
     intro = (f'{today}\n'
              f'Dear {city} City Council:\n'
-             f'We are writing on behalf of <b class="text-bold">YIMBY Law</b> regarding {city}’s 6th Cycle Housing '
-             f'Element Update. <b class="text-bold">YIMBY Law</b> is a legal nonprofit working to make housing in '
-             f'California more accessible and affordable through enforcement of state law.\n'
+             f'We are writing on behalf of <b class="text-bold">South Bay YIMBY</b> regarding {city}’s 6th Cycle Housing '
+             f'Element Update. As a regional pro-housing advocacy group, South Bay YIMBY works to ensure '
+             f'cities adopt housing elements that are fair, realistic, and lawful.\n'
              f"Per §8899.50(a)(1) of state code, {city}'s housing element must affirmatively further fair housing, "
              f"which entails 'taking meaningful actions... that overcome patterns of segregation.'\n")
 
@@ -111,12 +111,12 @@ def make_body(city):
                '<tr class="mb-1">'
                '    <td><b class="text-bold">Keith Diggs</b>, YIMBY Law</td>'
                "</tr>")
-    if city.name in ('Orinda, Moraga', 'Clayton', 'Danville', 'San Ramon'):
+    if city.name in ('Orinda', 'Moraga', 'Clayton', 'Danville', 'San Ramon'):
         signoff += ('<tr class="mb-1">'
                     '    <td><b class="text-bold">Jeremy Levine</b>, Legislative and Political Director '
                     'for Contra Costa Young Democrats</td>'
                     "</tr>")
-    signoff += "</table>"
+    signoff += "</table>";
     if city.name == 'Millbrae':
         # Millbrae actually has a higher li+vli RHNA than our li+vli recommendation. Reformat its recommendations.
         recs = recs.split('\n')[1]
@@ -152,7 +152,8 @@ font_config = FontConfiguration()
 
 tailwind_css = CSS(url='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css')
 
-cities = utils.get_exclusionary_cities()
+#cities = utils.get_exclusionary_cities()
+cities = ['Atherton']
 factory = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
 for city_name in cities:
     city = factory.build(city_name)

@@ -164,3 +164,4 @@ def get_city_sfz_ho_pct(city):
         print(city, " has no high opportunity areas.")
         return 0
     return round(df.loc[''.join(city.split())].values.item(), 1)
+

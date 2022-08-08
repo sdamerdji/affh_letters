@@ -26,6 +26,7 @@ SCOPES = [
     'https://www.googleapis.com/auth/gmail.send',
 ]
 
+
 def format_recipients_list(emails: List[Tuple[str, str]]) -> str:
     return ', '.join(f'{name} <{email}>' for name, email in emails)
 
@@ -64,8 +65,9 @@ def make_email(
 
     return message
 
+
 def send_email(message: MIMEMultipart) -> None:
-    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    creds = Credentials.from_authorized_user_file('./letter_data/token.json', SCOPES)
     service = build('gmail', 'v1', credentials=creds)
 
     message_encoded = {
@@ -85,13 +87,15 @@ def main():
         subject='Test from Gmail API!',
         body=dedent(
             """\
-            Hello,
+            Hi,
+            
             This is an email test.
-            Thanks so much,<br>
+            
+            Thanks,<br>
             Salim
             """
         ),
-        attachments=[Path("./letters/Atherton.pdf")]
+        attachments=[('Atherton.pdf', Path("./letters/Atherton.pdf"))]
     )
 
     send_email(message)
