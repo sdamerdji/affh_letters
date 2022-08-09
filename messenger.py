@@ -12,7 +12,6 @@ for pdf_file in pdfs:
     emails = emails_df[
         emails_df['city'] == city_name
         ].squeeze()['emails'].split(',')
-
     body = dedent(
         f"""\
             Dear {city_name} City Council:
@@ -22,7 +21,6 @@ for pdf_file in pdfs:
 
             Best,<br>
             Salim Damerdji<br>
-            sdamerdji1@gmail.com<br>
             """
     )
 
