@@ -111,7 +111,7 @@ def test_sfr_ho_pct_data():
 
 def test_get_sfz_ho_for_city():
     for city in utils.get_exclusionary_cities():
-        if city != 'Morgan Hill': # Morgan Hill has no high opportunity areas. Rethink inclusion in project.
+        if city != 'Morgan Hill': # Morgan Hill has no high opportunity areas.
             assert utils.get_city_sfz_ho_pct(city)
 
 
@@ -142,8 +142,36 @@ def test_one_pctr_cities():
         if c.one_percenter_city():
             print(city, c.pct_ho_sfz())
 
+def test_two_pctr_cities():
+    cities = utils.get_exclusionary_cities()
+    result = []
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    for city in cities:
+        c = cf.build(city)
+
+        if c.two_percenter_city():
+            print(city, c.income_percent(), c.pct_ho_sfz())
+
+        elif c.pct_ho_sfz() > 95:
+            print('hi')
+            print(city, c.income_percent(), c.pct_ho_sfz())
 
 def test_city_contacts():
     cities = utils.get_exclusionary_cities()
+    print(len(cities))
     contactable = pd.read_csv('./letter_data/emails.csv', names=['city', 'emails'])
     assert set(cities) <= set(contactable.city)
+
+def test_city_black_attrition():
+    cities = utils.get_exclusionary_cities()
+    cf = CityFactory(utils.get_obi_data(), utils.get_zillow_data())
+    most = 0
+    most_name = None
+    for city in cities:
+        c = cf.build(city)
+        most = max(most, c.brown_population_attrition())
+        if most == c.brown_population_attrition():
+            most_name = city
+    print(most)
+    print(most_name)
+

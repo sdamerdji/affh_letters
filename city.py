@@ -1,5 +1,6 @@
 import math
 import utils
+import numpy as np
 
 
 class CityFactory:
@@ -128,10 +129,10 @@ class City:
 
         Notes
         -----
-        Bay Area is 24% black as of 2019. That's the baseline to compare a city to.
+        Bay Area is 24% hispanic as of 2019. That's the baseline to compare a city to.
         https://bayareaequityatlas.org/indicators/race-ethnicity#/
         """
-        bay_area_latino_pct = .06
+        bay_area_latino_pct = .24
         delta = 1 - round(self.pct_latino / bay_area_latino_pct, 3)
         return max(delta, 0)
 
@@ -148,6 +149,16 @@ class City:
         """
         one_percent = 597815
         return self.salary_to_buy() > one_percent
+
+    def two_percenter_city(self):
+        """Do you need to be in the 1% to afford an average home in this city?
+
+        :return: bool
+        Income data is 2019 data from here https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-tax-rate-and-income-percentile#earlyRelease
+        -----
+        """
+        two_percent = 364693
+        return self.salary_to_buy() > two_percent
 
     def income_percent(self):
         """
@@ -250,6 +261,35 @@ class City:
     def pct_sfz(self):
         return utils.get_city_sfz_pct(self.name)
 
-
     def pct_ho_sfz(self):
         return utils.get_city_sfz_ho_pct(self.name)
+
+    def li_adus(self):
+        concerning_allocations = {'Monte Sereno': 100,
+                                  'Hillsborough': 57,
+                                  'Atherton': 88,
+                                  "Los Altos Hills": 44,
+                                  'Woodside': 56
+                                  }
+
+        return concerning_allocations.get(self.name, np.nan)
+
+    def adus_monthly_rental(self):
+        concerning_allocations = {'Monte Sereno': 3450,
+                                  'Hillsborough': 4500,
+                                  'Atherton': 3800,
+                                  "Los Altos Hills": 3500,
+                                  'Woodside': 3000}
+
+        return concerning_allocations.get(self.name, np.nan)
+
+    def adus_rental_source(self):
+        source = ''
+
+        if self.name in ('Monte Sereno', 'Atherton', 'Hillsborough'):
+            source = 'Zillow'
+
+        if self.name in ('Los Altos Hills', 'Woodside'):
+            source = 'Craigslist'
+
+        return source
