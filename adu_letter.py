@@ -56,28 +56,27 @@ def make_body(city):
                     f"local survey had only five respondents</b> indicate the rent they charge. Portraying this as a "
                     f"valid survey on affordability is malpractice. What's more, the survey does not show a "
                     f"single ADU is rented affordably to a tenant who is not simply a family member.\n")
-    recs = ("To be clear, ADUs are a valuable part of a healthy mix of housing choices. But not every low income "
+    recs = ("To be clear, ADUs are a valuable part of a healthy mix of housing choices. But not every LI "
             "family wants to live in "
             "someone else’s backyard. Not every LI family is small enough to live in a small ADU. And even "
-            f"those LI families who would happily live in an ADU can’t do it in {city.name} "
-            "because virtually no ADUs are available to the public at a rent suitable for LI tenants.\n")
-    recs += ("To rectify this, your city should entirely lift its ban on "
-             'apartments, condos, and townhomes. As of 2020, your city outlawed these buildings '
+            f"those LI families who'd happily live in an ADU can’t do it in {city.name} "
+            "because virtually no ADUs are available to the public at an affordable rent.\n")
+    recs += ("To AFFH, your city should entirely lift its ban on Mullin-density housing. "
+             'As of 2020, your city banned apartments '
              f'in {city.pct_sfz():.0f}% of residential areas, effectively '
              f'banning affordable housing built at-scale. '
-             f'Aside from creating more abundant options for LI families, '
-             'lifting your exclusionary zoning will also yield homeownership opportunities to build intergenerational '
+             f'Aside from creating more choice for LI families, '
+             'lifting exclusionary zoning will also yield homeownership opportunities to build intergenerational '
              'wealth in a high opportunity community that ADUs, as rentals, cannot. Plus, more choice allows '
-             "larger low income families to find 3+ bedroom units, rare among ADUs, that meets their needs.\n")
+             "larger LI families to find 3+ bedroom units, rare among ADUs, that meet their needs.\n")
 
     if city.name == 'Hillsborough':
-        recs += ('We appreciate that you already are making significant steps in this direction, but we note that, '
+        recs += ('We appreciate that you already are making steps in this direction, but '
                  f'even among other small, exclusionary cities in the Bay Area, {city.name} slots nearly twice as '
-                 f"many low income families into ADUs as other cities do. That is, even with the steps you've made,"
+                 f"many LI families into ADUs as other cities do. That is, even with the steps you've made,"
                  " you are still behind the ball in lifting exclusionary zoning. If your city is politically unwilling "
-                 f'to make room for low income residents everywhere in {city.name}, you should at least double the '
-                 f'amount of upzoning accommodating low income folks to be in line with other exclusionary '
-                 f'Bay Area cities. This is the bare minimum.')
+                 f'to make room for LI residents everywhere in {city.name}, you should at least upzone 50% more'
+                 f' to accommodate LI folks to be in line with other exclusionary Bay Area cities.\n')
 
     signoff = ('<br>'
                "Thank you,"
