@@ -1,5 +1,5 @@
 # affh_letters
-Automated letter campaign for Bay Area cities with high degrees of segregation
+This is an automated letter campaign for Bay Area cities with high degrees of segregation. As cities update their housing plans, they have an obligation to demonstrate to HCD that they are complying with Affirmatively Furthering Fair Housing (AFFH) law that this letter campaign argues their existing housing policies violate. This letter campaign recieved local press in the Los Altos Town Crier:  https://www.losaltosonline.com/news/la-lah-deemed-exclusionary-as-they-prep-housing-plans
 
 # Data sources
 
